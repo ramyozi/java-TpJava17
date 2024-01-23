@@ -3,45 +3,41 @@ package java17.ex01;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Test;
 
-/**
- * Exercice 01 - Les dates avant Java 8
- */
 public class DateAndTime_01_Test {
 
-	// Vous vous souvenez de java.util.Date (Java 1) ?
-	@Test
-	public void test_date() {
+    @Test
+    public void test_date() {
+        LocalDate localDate = LocalDate.of(2017, Month.MARCH, 24);
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-		// TODO modifier les paramètres du constructeur pour que le test soit passant
-		Date date = new Date(0, 0, 0, 0, 0, 0);
+        assertThat(date.toString(), is("Fri Mar 24 00:00:00 CET 2017"));
 
-		assertThat(date.toString(), is("Fri Mar 24 01:02:03 CET 2017"));
+        localDate = localDate.plusDays(1);
+        date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-		// TODO modifier le jour de la date avec une méthode set pour que le test soit
-		// passant
+        assertThat(date.toString(), is("Sat Mar 25 00:00:00 CET 2017"));
+    }
 
-		assertThat(date.toString(), is("Sat Mar 25 01:02:03 CET 2017"));
-	}
+    @Test
+    public void test_calendar() throws Exception {
+        LocalDate localDate = LocalDate.of(2017, Month.MARCH, 24);
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-	// Vous vous souvenez de java.util.Calendar (Java 1.1) ?
+        assertThat(date.toString(), is("Fri Mar 24 00:00:00 CET 2017"));
 
-	@Test
-	public void test_calendar() throws Exception {
-		Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-		// TODO modifier l'objet calendar pour que le test soit passant
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
 
-		assertThat(calendar.getTime().toString(), is("Fri Mar 24 01:02:03 CET 2017"));
-
-		// calendar est mutable... :-(
-		// TODO modifier l'objet calendar pour que le test soit passant
-
-		assertThat(calendar.getTime().toString(), is("Sat Mar 25 01:02:03 CET 2017"));
-	}
-
+        assertThat(calendar.getTime().toString(), is("Sat Mar 25 00:00:00 CET 2017"));
+    }
 }

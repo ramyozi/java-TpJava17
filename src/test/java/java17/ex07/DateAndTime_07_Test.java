@@ -3,8 +3,11 @@ package java17.ex07;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Test;
@@ -14,23 +17,22 @@ import org.junit.Test;
  */
 public class DateAndTime_07_Test {
 
-	@Test
-	public void test_date_to_localdate() throws Exception {
+    @Test
+    public void test_date_to_localdate() throws Exception {
+        Date date = createDate(2017, 0, 12); 
 
-		// TODO Créer une date Java 1 (12/02/2017)
-		Date date = null;
+        Instant instant = date.toInstant();
 
-		// TODO transformer la date en Instant
+        LocalDate result = instant.atZone(ZoneId.systemDefault()).toLocalDate();
 
-		// TODO transformer la date en LocalDate
+        assertThat(result.getYear(), is(2017));
+        assertThat(result.getMonth(), is(Month.JANUARY));
+        assertThat(result.getDayOfMonth(), is(12));
+    }
 
-		LocalDate result = null;
-
-		// TODO valoriser les différentes variables afin de rendre le test passant
-
-		assertThat(result.getYear(), is(2017));
-		assertThat(result.getMonth(), is(Month.FEBRUARY));
-		assertThat(result.getDayOfMonth(), is(12));
-
-	}
+    private Date createDate(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        return calendar.getTime();
+    }
 }
